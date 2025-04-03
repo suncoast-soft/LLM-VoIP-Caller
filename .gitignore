@@ -1,0 +1,34 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Audio output & recordings
+audio/output/
+*.wav
+*.mp3
+*.ogg
+
+# Logs
+*.log
+logs/
+
+# Environment variables and local configs
+.env
+.env.local
+
+# Jupyter or IPython files (just in case)
+.ipynb_checkpoints/
+
+# macOS/Linux system files
+.DS_Store
+Thumbs.db
+
+# Asterisk build and source dirs (if present in project folder)
+asterisk-*/
+*.tar.gz
