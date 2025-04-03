@@ -9,13 +9,22 @@ sudo apt install -y \
   libncurses5-dev libsqlite3-dev uuid-dev libjansson-dev libedit-dev libreadline-dev \
   libsndfile1 espeak ffmpeg python3.10 python3.10-dev python3.10-venv
 
+
 echo ">>> Creating Python 3.10 virtual environment..."
 python3.10 -m venv venv
 source venv/bin/activate
 
-echo ">>> Upgrading pip and installing dependencies from requirements.txt..."
+echo ">>> Installing core AI orchestrator packages..."
 pip install --upgrade pip setuptools wheel
-pip install -r requirements.txt
+pip install vllm transformers accelerate
+# pip install numpy==1.22.0
+pip install numpy
+pip install TTS
+pip install git+https://github.com/openai/whisper.git
+pip install soundfile ffmpeg-python pydub
+pip install fastapi uvicorn requests python-dotenv
+pip install tiktoken openai
+
 
 echo ">>> Downloading and building Asterisk from source..."
 cd /usr/src
