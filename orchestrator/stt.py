@@ -2,7 +2,7 @@
 
 import whisper
 
-model = whisper.load_model("base")
+model = whisper.load_model("base", device="cpu")
 
 
 def transcribe_audio(file_path: str) -> str:

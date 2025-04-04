@@ -3,7 +3,7 @@
 from TTS.api import TTS
 
 tts_model = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC",
-                progress_bar=False, gpu=True)
+                progress_bar=False, gpu=False)
 
 
 def synthesize_audio(text: str, output_path: str):
