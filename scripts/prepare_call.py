@@ -29,11 +29,8 @@ response = requests.post(VLLM_URL, json={
     "max_tokens": 200,
     "stream": False
 })
-print(response)
 intro_text = response.json()["choices"][0]["message"]["content"]
 print("✅ LLM Response:", intro_text)
-
-intro_text = "I am an AI caller center"
 
 
 # ✅ 3. Convert to speech with Coqui TTS

@@ -21,12 +21,6 @@ read
 # echo "STREAM FILE /home/ubuntu/ai-call-center/audio/outputs/response \"\""
 # read
 
-# echo "WAIT FOR DIGIT 1000"
-# read
-
-# echo "SAY DIGITS 1 \"\""
-# read
-
 # 6. Hang up
 echo "HANGUP"
 read
