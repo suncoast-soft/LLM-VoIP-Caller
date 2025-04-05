@@ -31,6 +31,8 @@ async def process_audio(audio: UploadFile = File(...)):
 
     # Step 1: Transcribe with Whisper
     transcript = transcribe_audio(str(input_path))
+    if not transcript.strip():
+        transcript = "Sorry, I didn't catch that."
     print(f"[STT] Transcript: {transcript}")
 
     # Step 2: Stream LLM tokens and synthesize audio chunks
