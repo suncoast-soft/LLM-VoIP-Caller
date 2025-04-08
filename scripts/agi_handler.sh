@@ -28,7 +28,7 @@ cd /home/ubuntu/ai-call-center
 /home/ubuntu/ai-call-center/venv/bin/python3 -m orchestrator.stream_orchestrator >> /tmp/orchestrator.log 2>&1
 
 # --- Wait until TTS starts writing files
-AUDIO_DIR="/var/lib/asterisk/stream_audio"
+AUDIO_DIR="/var/lib/asterisk/sounds/stream_audio"
 MAX_WAIT=10  # 5s max (10 × 0.5s)
 WAITED=0
 
@@ -51,7 +51,7 @@ for seg in $AUDIO_DIR/stream_*.wav; do
   sleep 0.2
 
   echo "[AGI] Playing $seg_name" >&2
-  echo "STREAM FILE $seg_name \"\""
+  echo "STREAM FILE stream_audio/$seg_name \"\""
   read
   echo "WAIT FOR DIGIT 300"
   read

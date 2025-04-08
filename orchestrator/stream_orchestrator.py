@@ -6,7 +6,7 @@ from orchestrator.tts_streamer import synthesize_audio_stream
 from orchestrator.asterisk_streamer import stream_to_asterisk
 
 AUDIO_FILE = "/tmp/user_input.wav"
-AUDIO_STREAM_DIR = "/var/lib/asterisk/stream_audio"
+AUDIO_STREAM_DIR = "/var/lib/asterisk/sounds/stream_audio"
 
 
 def main():
