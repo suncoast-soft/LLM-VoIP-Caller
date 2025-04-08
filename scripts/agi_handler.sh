@@ -70,4 +70,7 @@ while true; do
   fi
 done
 
+echo "WAIT FOR DIGIT 1000"
+read
+
 echo "HANGUP"
