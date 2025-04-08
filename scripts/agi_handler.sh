@@ -47,17 +47,13 @@ done
 for seg in $AUDIO_DIR/stream_*.wav; do
   seg_name=$(basename "${seg%.*}")
 
-  # Wait until the file is fully flushed (optional: small delay)
-  sleep 0.2
-
   echo "[AGI] Playing $seg_name" >&2
   echo "STREAM FILE stream_audio/$seg_name \"\""
   read
   echo "WAIT FOR DIGIT 300"
   read
 
-  # --- DO NOT DELETE HERE ---
-  # rm -f "$seg"
+  rm -f "$seg"
 done
 
 echo "HANGUP"

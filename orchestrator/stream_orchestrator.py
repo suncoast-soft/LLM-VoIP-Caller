@@ -9,6 +9,19 @@ AUDIO_FILE = "/tmp/user_input.wav"
 AUDIO_STREAM_DIR = "/var/lib/asterisk/sounds/stream_audio"
 
 
+def group_tokens(token_stream, max_words=5):
+    buffer = []
+    for token in token_stream:
+        if not token.strip():
+            continue
+        buffer.append(token)
+        if len(buffer) >= max_words or token.strip().endswith(('.', '!', '?', ',')):
+            yield " ".join(buffer).strip()
+            buffer.clear()
+    if buffer:
+        yield " ".join(buffer).strip()
+
+
 def main():
     if not os.path.exists(AUDIO_FILE):
         print(f"[ERROR] Audio file not found: {AUDIO_FILE}")
@@ -19,9 +32,10 @@ def main():
     print(f"[STT] Transcript: {transcript}")
 
     print("[LLM] Streaming response...")
-    for token in stream_llm_tokens(transcript):
-        print(f"[LLM] {token}", flush=True)
-        audio_bytes = synthesize_audio_stream(token)
+    token_stream = stream_llm_tokens(transcript)
+    for phrase in group_tokens(token_stream, max_words=5):
+        print(f"[LLM] {phrase}", flush=True)
+        audio_bytes = synthesize_audio_stream(phrase)
         if audio_bytes:
             filename = f"stream_{uuid.uuid4().hex[:8]}.wav"
             filepath = os.path.join(AUDIO_STREAM_DIR, filename)
