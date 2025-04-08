@@ -1,7 +1,6 @@
 import whisper
 import os
 
-# ✅ Force model to load on CPU
 model = whisper.load_model("base", device="cpu")
 
 
@@ -12,8 +11,7 @@ def transcribe_file(audio_path: str) -> str:
         return ""
 
     try:
-        # ✅ Force CPU again and disable fp16 explicitly
-        result = model.transcribe(audio_path, fp16=False)
+        result = model.transcribe(audio_path, fp16=False, language="en")
         transcript = result.get("text", "")
         print(f"[STT] Transcript: {transcript}")
         return transcript

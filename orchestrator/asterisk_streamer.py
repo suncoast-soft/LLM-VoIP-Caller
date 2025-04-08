@@ -43,6 +43,6 @@ def stream_to_asterisk(audio_bytes, final_path):
         os.remove(final_path)
     os.rename(temp_fixed_path, final_path)
 
-    # Correct permissions
-    os.chown(final_path, asterisk_uid, asterisk_gid)
-    os.chmod(final_path, 0o644)
+    # # Correct permissions
+    # os.chown(final_path, asterisk_uid, asterisk_gid)
+    # os.chmod(final_path, 0o644)

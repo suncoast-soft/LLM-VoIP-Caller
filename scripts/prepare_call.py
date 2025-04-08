@@ -35,9 +35,8 @@ print("✅ LLM Response:", intro_text)
 
 # ✅ 3. Convert to speech with Coqui TTS
 print("🗣️ Generating speech...")
-tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC",
-          progress_bar=False, gpu=False)
-tts.tts_to_file(text=intro_text, file_path=TEMP_FILE)
+tts = TTS(model_name="tts_models/en/vctk/vits", progress_bar=False, gpu=False)
+tts.tts_to_file(text=intro_text, file_path=TEMP_FILE, speaker="p225")
 
 
 # ✅ 4. Convert to ulaw in temp, then sudo move to Asterisk
