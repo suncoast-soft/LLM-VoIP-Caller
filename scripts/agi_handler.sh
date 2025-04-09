@@ -31,7 +31,7 @@ while true; do
   RESPONSE_PATH="/var/lib/asterisk/sounds/response_${CALL_ID}.wav"
 
   echo "[AGI] Recording caller..." >> "$LOG_FILE"
-  echo "RECORD FILE ${RECORD_PATH%.*} wav \"#\" 10000 2 s=3"
+  echo "RECORD FILE ${RECORD_PATH%.*} wav \"#\" 15000 1 s=2"
   read
 
   if [ ! -f "$RECORD_PATH" ]; then

@@ -19,8 +19,8 @@ call_id = uuid.uuid4().hex[:8]
 
 # ✅ 2. Define the intro agenda prompt
 intro_agenda = (
-    "Please greet the recipient as a friendly AI assistant and explain that this is "
-    "a brief test call to demonstrate our intelligent voice system. Limit it to less than 2 sentences."
+    "Hi, I’m just calling to run a quick sound check. "
+    "Go ahead and say anything when you're ready."
 )
 
 

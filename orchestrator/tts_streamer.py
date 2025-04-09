@@ -18,7 +18,7 @@ def synthesize_full_response_audio(text: str, output_path: str) -> bool:
 
     try:
         # Generate audio from TTS
-        audio = tts.tts(text, speaker="p225")
+        audio = tts.tts(text, speaker="p313")
         sample_rate = tts.synthesizer.output_sample_rate
 
         # Add silence padding
