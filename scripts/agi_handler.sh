@@ -9,50 +9,55 @@ while read line; do
   [ "$line" = "" ] && break
 done
 
-echo "[AGI] Playing intro_${CALL_ID}.wav" >> "$LOG_FILE"
-
-# --- Answer and stabilize RTP ---
 echo "ANSWER"
 read
 echo "WAIT FOR DIGIT 1000"
 read
 sleep 1
 
-# --- Play intro if available ---
+# --- Play pre-generated intro if it exists ---
 INTRO_PATH="/var/lib/asterisk/sounds/intro_${CALL_ID}.wav"
 if [ -f "$INTRO_PATH" ]; then
+  echo "[AGI] Playing intro_${CALL_ID}.wav" >> "$LOG_FILE"
   echo "STREAM FILE intro_${CALL_ID} \"\""
   read
   echo "WAIT FOR DIGIT 500"
   read
-else
-  echo "[AGI] No intro file found for CALL_ID ${CALL_ID}" >> "$LOG_FILE"
 fi
 
-# --- Record caller response ---
-RECORD_PATH="/tmp/user_input_${CALL_ID}.wav"
-echo "RECORD FILE ${RECORD_PATH%.*} wav \"#\" 5000"
-read
-echo "[AGI] Recorded caller response to ${RECORD_PATH}" >> "$LOG_FILE"
+# --- Conversation Loop ---
+while true; do
+  RECORD_PATH="/tmp/user_input_${CALL_ID}.wav"
+  RESPONSE_PATH="/var/lib/asterisk/sounds/response_${CALL_ID}.wav"
 
-# --- Send to orchestrator for response generation ---
-echo "[AGI] Sending call_id to orchestrator..." >> "$LOG_FILE"
-curl -X POST http://localhost:8100/call \
-  -H "Content-Type: application/json" \
-  -d "{\"call_id\": \"$CALL_ID\"}" >> "$LOG_FILE" 2>&1
-
-# --- Play generated response ---
-RESPONSE_PATH="/var/lib/asterisk/sounds/response_${CALL_ID}.wav"
-if [ -f "$RESPONSE_PATH" ]; then
-  echo "STREAM FILE response_${CALL_ID} \"\""
+  echo "[AGI] Recording caller..." >> "$LOG_FILE"
+  echo "RECORD FILE ${RECORD_PATH%.*} wav \"#\" 10000 2 s=3"
   read
-else
-  echo "[AGI] No response audio found at $RESPONSE_PATH" >> "$LOG_FILE"
-fi
 
-# --- Optional cleanup ---
-rm -f "$RECORD_PATH"
-rm -f "$INTRO_PATH"
-rm -f "$RESPONSE_PATH"
+  if [ ! -f "$RECORD_PATH" ]; then
+    echo "[AGI] No user input recorded. Ending call." >> "$LOG_FILE"
+    break
+  fi
+
+  echo "[AGI] Sending to orchestrator..." >> "$LOG_FILE"
+  curl -s -X POST http://localhost:8100/call \
+    -H "Content-Type: application/json" \
+    -d "{\"call_id\": \"$CALL_ID\"}" >> "$LOG_FILE" 2>&1
+
+  if [ -f "$RESPONSE_PATH" ]; then
+    echo "[AGI] Playing response_${CALL_ID}.wav" >> "$LOG_FILE"
+    echo "STREAM FILE response_${CALL_ID} \"\""
+    read
+    echo "WAIT FOR DIGIT 500"
+    read
+  else
+    echo "[AGI] No response audio found. Ending call." >> "$LOG_FILE"
+    break
+  fi
+
+  # Optional: clean up audio files to avoid overwrite conflict
+  rm -f "$RECORD_PATH"
+  rm -f "$RESPONSE_PATH"
+done
 
 echo "HANGUP"
